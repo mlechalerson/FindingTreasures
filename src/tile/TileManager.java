@@ -20,7 +20,7 @@ public class TileManager {
         this.gp = gp;
 
         tile = new Tile[10];
-        mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
+        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
         loadMap("/maps/world01.txt");
     }
@@ -32,7 +32,9 @@ public class TileManager {
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/Bomba-sky.png")));
             tile[2] = new Tile();
+            tile[1].collision=true;
             tile[2].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/chest.png")));
+            tile[2].collision = true;
 
         }catch (IOException e){
             e.printStackTrace();
@@ -63,7 +65,7 @@ public class TileManager {
             }
             br.close();
         }catch (Exception e){
-            e.printStackTrace();
+
         }
     }
     public void draw(Graphics2D g2){
@@ -79,8 +81,17 @@ public class TileManager {
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-            g2.drawImage(tile[tileNum].image, screenX, screenY , gp.TileSize, gp.TileSize, null);
+            if (worldX + gp.TileSize> gp.player.worldX - gp.player.screenX &&
+                    worldX - gp.TileSize< gp.player.worldX + gp.player.screenX &&
+                    worldY + gp.TileSize> gp.player.worldY - gp.player.screenY &&
+                    worldY - gp.TileSize< gp.player.worldY + gp.player.screenY ){
+
+                g2.drawImage(tile[tileNum].image, screenX, screenY , gp.TileSize, gp.TileSize, null);
+
+            }
+
             worldCol++;
+
             if (worldCol == gp.maxScreenCol){
                 worldCol = 0;
                 worldRow++;

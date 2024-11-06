@@ -15,12 +15,20 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
+    int counter2 =0;
+
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
 
         screenX = gp.screenWidth/2 - (gp.TileSize/2);
         screenY = gp.screenHeight/2 - (gp.TileSize/2);
+
+        solidArea = new Rectangle();
+        solidArea.x=8;
+        solidArea.y=16;
+        solidArea.width=32;
+        solidArea.height=32;
 
         setDefaultValues();
         getPlayerImage();
@@ -57,6 +65,8 @@ public class Player extends Entity {
             direction = "right";
             worldX += speed;
         }
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
 
     }
     public void draw(Graphics g2){
