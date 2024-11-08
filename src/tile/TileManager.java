@@ -13,8 +13,8 @@ import java.util.Objects;
 public class TileManager {
 
     GamePanel gp;
-    Tile[] tile;
-    int mapTileNum[][];
+    public Tile[] tile;
+    public int[][] mapTileNum;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -51,7 +51,7 @@ public class TileManager {
             while (col < gp.maxWorldCol && row < gp.maxWorldRow){
                 String line = br.readLine();
                 while (col < gp.maxWorldCol){
-                    String numbers[] = line.split(" ");
+                    String[] numbers = line.split(" ");
 
                     int num = Integer.parseInt(numbers[col]);
 
@@ -92,7 +92,7 @@ public class TileManager {
 
             worldCol++;
 
-            if (worldCol == gp.maxScreenCol){
+            if (worldCol == gp.maxWorldCol){
                 worldCol = 0;
                 worldRow++;
             }

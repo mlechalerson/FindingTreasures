@@ -42,31 +42,43 @@ public class Player extends Entity {
     public void getPlayerImage(){
         try{
             left = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/Bomba-left.png")));
+            left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/Bomba-left-2.png")));
             right = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/Bomba-right.png")));
+            right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/Bomba-right-2.png")));
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
     public void update(){
-        if (keyH.upPressed){
-            worldY -= speed;
-
+        if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true){
+            if (keyH.upPressed == true){
+                direction = "left";
+            } else if (keyH.downPressed == true){
+                direction = "right";
         }
-        else if (keyH.downPressed){
-            worldY += speed;
-        }
-        else if (keyH.leftPressed){
+        else if (keyH.leftPressed == true){
             direction = "left";
-            worldX -= speed;
+
 
         }
-        else if (keyH.rightPressed){
+        else if (keyH.rightPressed == true){
             direction = "right";
-            worldX += speed;
+
         }
+        //CHECK TILE COLLISION
         collisionOn = false;
         gp.cChecker.checkTile(this);
+
+        //IF COLLISION IS FALSE, PLAYER CAN MOVE
+        if (collisionOn == false){
+            switch (direction){
+                case "up": worldY -= speed; break;
+                case "down": worldY += speed; break;
+                case "left": worldX -= speed; break;
+                case "right": worldX += speed; break;
+            }
+        }}
 
     }
     public void draw(Graphics g2){
