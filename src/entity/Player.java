@@ -6,6 +6,7 @@ import main.KeyHandler;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Objects;
 
 public class Player extends Entity {
@@ -45,7 +46,11 @@ public class Player extends Entity {
             left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/Bomba-left-2.png")));
             right = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/Bomba-right.png")));
             right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/Bomba-right-2.png")));
-        }catch(Exception e){
+            up = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/Bomba-up.png")));
+            up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/Bomba-up-2.png")));
+            down = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/Bomba-down.png")));
+            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/Bomba-down-2.png")));
+        }catch(IOException e){
             e.printStackTrace();
         }
     }
@@ -53,9 +58,9 @@ public class Player extends Entity {
     public void update(){
         if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true){
             if (keyH.upPressed == true){
-                direction = "left";
+                direction = "up";
             } else if (keyH.downPressed == true){
-                direction = "right";
+                direction = "down";
         }
         else if (keyH.leftPressed == true){
             direction = "left";
@@ -65,6 +70,16 @@ public class Player extends Entity {
         else if (keyH.rightPressed == true){
             direction = "right";
 
+        }
+
+        spriteCounter++;
+        if (spriteCounter > 12){
+            if (spriteNum == 1){
+                spriteNum = 2;
+            } else if (spriteNum == 2) {
+                spriteNum = 1;
+            }
+            spriteCounter =0;
         }
         //CHECK TILE COLLISION
         collisionOn = false;
@@ -87,11 +102,35 @@ public class Player extends Entity {
 //        g2.fillRect(x, y, gp.TileSize, gp.TileSize);
         BufferedImage image = null;
         switch(direction){
+            case "up":
+                if (spriteNum == 1){
+
+
+                image = up;}
+                if (spriteNum == 2){
+                    image = up2;
+                }
+                break;
+            case "down":
+                if (spriteNum == 1){
+                image = down;}
+                if (spriteNum == 2){
+                    image = down2;
+                }
+                break;
             case "left":
-                image = left;
+                if (spriteNum == 1){
+                image = left;}
+                if (spriteNum == 2){
+                    image = left2;
+                }
                 break;
             case "right":
-                image = right;
+                if (spriteNum == 1){
+                image = right;}
+                if (spriteNum == 2){
+                    image = right2;
+                }
                 break;
 
         }
