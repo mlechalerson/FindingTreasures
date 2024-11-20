@@ -15,7 +15,7 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
-    int hasShovel =0;
+    public int hasKey =0;
 
     int counter2 =0;
 
@@ -115,13 +115,16 @@ public class Player extends Entity {
 
             switch(objectName){
                 case "Chest":
-                    if (hasShovel > 1){
+                    if (hasKey > 0){
                         gp.obj[i] = null;
-                        hasShovel--;
+                        hasKey--;
                     }
                     break;
+                case "Key":
+                    hasKey++;
+                    gp.obj[i] = null;
+                    break;
                 case "Shovel":
-                    hasShovel++;
                     gp.obj[i] = null;
                     break;
             }
