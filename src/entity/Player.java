@@ -19,11 +19,10 @@ public class Player extends Entity {
 
     int counter2 =0;
 
-    public Player(GamePanel gp, KeyHandler keyH, int dfbdfg) {
-        screenX = gp.screenWidth/2 - (gp.TileSize/2);
-        screenY = gp.screenHeight/2 - (gp.TileSize/2);
-    }
+
     public Player(GamePanel gp, KeyHandler keyH) {
+        super(gp);
+
         this.gp = gp;
         this.keyH = keyH;
 
@@ -45,8 +44,15 @@ public class Player extends Entity {
         worldX = gp.TileSize * 23;
         worldY = gp.TileSize * 21;
         speed = 4;
-        direction = "right";
+        direction = "down";
+
+        //PLAYER STATUS
+        maxLife = 6;
+        life = maxLife;
     }
+
+
+
     public void getPlayerImage(){
         try{
             left = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/images/Bomba-left.png")));
@@ -95,6 +101,10 @@ public class Player extends Entity {
         // CHECK OBJECT COLLISION
          int objIndex = gp.cChecker.checkObject(this, true);
          pickUpObject(objIndex);
+
+         //CHECK EVENT
+            gp.eHandler.checkEvent();
+            gp.keyH.enterPressed = false;
 
         //IF COLLISION IS FALSE, PLAYER CAN MOVE
         if (collisionOn == false){

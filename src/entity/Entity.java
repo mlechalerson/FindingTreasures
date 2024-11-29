@@ -18,6 +18,9 @@ public class Entity {
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
 
+    public int maxLife = 0;
+    public int life = 0;
+
     public Entity(GamePanel gp) {
         this.gp= gp;
     }
