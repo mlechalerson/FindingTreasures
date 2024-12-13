@@ -45,6 +45,7 @@ public class Paused {
         g2.setColor(Color.white);
         g2.drawImage(keyImage, gp.TileSize/2, gp.TileSize * 2, gp.TileSize/2, gp.TileSize /2 , null);
         g2.drawString("x " + gp.player.hasKey, 55, 120);
+        //System.out.println(gp.player.hasKey);
 
         //PLAY STATE
         if (gp.gameState == gp.playState){
@@ -115,7 +116,6 @@ public class Paused {
         int x = gp.screenWidth/2 - length/2;
         return x;
     }
-
 
 
 }
