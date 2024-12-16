@@ -1,7 +1,7 @@
 package main;
 
+import object.OBJ_Coin;
 import object.OBJ_Heart;
-import object.OBJ_Key;
 import object.SuperObject;
 
 import java.awt.*;
@@ -15,15 +15,15 @@ public class Paused {
     public String message = "";
     int messageCounter = 0;
     public boolean gameFinished = false;
-    BufferedImage keyImage, heart_full, heart_half, heart_empty;
+    BufferedImage coinImage, heart_full, heart_half, heart_empty;
 
     public Paused(GamePanel gp) {
         this.gp = gp;
 
         arial_40 = new Font("Arial", Font.PLAIN, 40);
         arial_80B = new Font("Arial", Font.BOLD, 80);
-//        OBJ_Key key = new OBJ_Key();
-//        keyImage = key.image;
+            OBJ_Coin coin = new OBJ_Coin();
+            coinImage = coin.image;
 
         SuperObject heart = new OBJ_Heart(gp);
         heart_full = heart.image;
@@ -43,8 +43,8 @@ public class Paused {
 
         g2.setFont(arial_40);
         g2.setColor(Color.white);
-        g2.drawImage(keyImage, gp.TileSize/2, gp.TileSize * 2, gp.TileSize/2, gp.TileSize /2 , null);
-        g2.drawString("x " + gp.player.hasKey, 55, 120);
+        g2.drawImage(coinImage, gp.TileSize/2, gp.TileSize * 2, gp.TileSize/2, gp.TileSize /2 , null);
+        g2.drawString("x " + gp.player.hasCoin, 55, 120);
         //System.out.println(gp.player.hasKey);
 
         //PLAY STATE

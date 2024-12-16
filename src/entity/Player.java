@@ -15,7 +15,7 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
-    public int hasKey =0;
+    public int hasCoin =0;
 
     int counter2 =0;
 
@@ -124,20 +124,14 @@ public class Player extends Entity {
             String objectName = gp.obj[i].name;
 
             switch(objectName){
-                case "Chest":
-                    if (hasKey > 0){
-                        gp.obj[i] = null;
-                        hasKey--;
-                    }
-                    break;
-                case "Key":
-                    hasKey++;
+                case "Coin":
+                    hasCoin++;
                     gp.obj[i] = null;
                     break;
-                case "Shovel":
-                    gp.obj[i] = null;
+                case "default":
                     break;
             }
+
         }
     }
     public void draw(Graphics g2){

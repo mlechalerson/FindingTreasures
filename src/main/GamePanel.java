@@ -51,9 +51,15 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
     }
 
+
     public void setupGame(){
 
         aSetter.seObject();
+        gameState = playState;
+        Monster monster = new Monster(this);
+        monster.worldX = 10 * TileSize; // przykładowa pozycja początkowa
+        monster.worldY = 10 * TileSize;
+
         gameState = playState;
     }
 
@@ -99,11 +105,18 @@ public class GamePanel extends JPanel implements Runnable {
     public void update(){
 
 
-        if (gameState == playState){
+        if (gameState == playState) {
             player.update();
-        }
-        if (gameState == pauseState){
-            //pause
+
+            // Aktualizacja potwora
+            if (Monster != null) {
+                monster.update();
+            }
+
+            // Sprawdzenie, czy gracz nie stracił wszystkich punktów życia
+            if (player.life <= 0) {
+                gameState = gameOverState; // Dodaj nowy stan gry
+            }
         }
     }
     public void paintComponent(Graphics g){
@@ -118,6 +131,9 @@ public class GamePanel extends JPanel implements Runnable {
             if (obj[i] != null) {
                 obj[i].draw(g2, this);
             }
+        }
+        if (monster != null) {
+            monster.draw(g2);
         }
 
         //PLAYER
