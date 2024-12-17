@@ -17,7 +17,7 @@ public class Monster extends Entity {
         this.gp = gp;
 
         name = "Garnuch";
-        speed = 1;
+        speed = 10;
         maxLife = 1;
         life = maxLife;
 
@@ -45,19 +45,24 @@ public class Monster extends Entity {
     }
 
     public void update() {
-        // Poruszanie się w kierunku gracza
-        int xDistance = Math.abs(worldX - gp.player.worldX);
-        int yDistance = Math.abs(worldY - gp.player.worldY);
-
         // Wybór kierunku ruchu
-        if (worldX < gp.player.worldX) {
-            direction = "right";
-        } else if (worldX > gp.player.worldX) {
-            direction = "left";
-        } else if (worldY < gp.player.worldY) {
-            direction = "down";
-        } else if (worldY > gp.player.worldY) {
-            direction = "up";
+        int xDistance = gp.player.worldX - worldX;
+        int yDistance = gp.player.worldY - worldY;
+        // Priorytetowy ruch w kierunku gracza
+        if (Math.abs(xDistance) > Math.abs(yDistance)) {
+            // Poruszaj się w poziomie
+            if (xDistance > 0) {
+                direction = "right";
+            } else {
+                direction = "left";
+            }
+        } else {
+            // Poruszaj się w pionie
+            if (yDistance > 0) {
+                direction = "down";
+            } else {
+                direction = "up";
+            }
         }
 
         collisionOn = false;
@@ -95,12 +100,17 @@ public class Monster extends Entity {
     }
 
     public void contactPlayer(int index) {
-        if (index != 999) {
-            // Bezpośredni kontakt z graczem
-            gp.player.life -= damageAmount;
+        Rectangle monsterSolidArea = new Rectangle(worldX + solidArea.x, worldY + solidArea.y,
+                solidArea.width, solidArea.height);
+        Rectangle playerSolidArea = new Rectangle(gp.player.worldX + gp.player.solidArea.x,
+                gp.player.worldY + gp.player.solidArea.y,
+                gp.player.solidArea.width, gp.player.solidArea.height);
+
+        if (monsterSolidArea.intersects(playerSolidArea)) {
+            // Gracz traci pół serca (zakładając, że życie jest całkowitoliczbowe)
+            gp.player.life -= 0.5;
             System.out.println("Monster attacked! Player life: " + gp.player.life);
-        }
-    }
+    }}
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
 

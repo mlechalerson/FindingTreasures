@@ -6,6 +6,7 @@ import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -41,6 +42,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState =1;
     public final int pauseState =2;
     public final int dialogueState =3;
+    public final int gameOverState =4;
+    public Monster monster;
 
 
     public GamePanel() {
@@ -55,10 +58,24 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame(){
 
         aSetter.seObject();
-        gameState = playState;
-        Monster monster = new Monster(this);
-        monster.worldX = 10 * TileSize; // przykładowa pozycja początkowa
-        monster.worldY = 10 * TileSize;
+        boolean monsterPlaced = false;
+        Random random = new Random();
+
+        for (int attempt = 0; attempt < 100 && !monsterPlaced; attempt++) {
+            int row = random.nextInt(maxWorldRow);
+            int col = random.nextInt(maxWorldCol);
+
+            if (tileM.mapTileNum[col][row] == 0) {
+                monster = new Monster(this);
+                monster.worldX = col * TileSize;
+                monster.worldY = row * TileSize;
+                monsterPlaced = true;
+            }
+        }
+        if (!monsterPlaced) {
+            System.out.println("Could not find a sand tile to place monster!");
+            monster = null;
+        }
 
         gameState = playState;
     }
@@ -109,7 +126,7 @@ public class GamePanel extends JPanel implements Runnable {
             player.update();
 
             // Aktualizacja potwora
-            if (Monster != null) {
+            if (monster != null) {
                 monster.update();
             }
 
@@ -123,6 +140,20 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         setBackground(new Color(255, 0, 0, 0));
         Graphics2D g2 = (Graphics2D) g;
+        if (gameState == gameOverState) {
+            g2.setColor(Color.BLACK);
+            g2.fillRect(0, 0, screenWidth, screenHeight);
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Arial", Font.BOLD, 70));
+            String text = "Game Over";
+            FontMetrics fm = g2.getFontMetrics();
+            int textWidth = fm.stringWidth(text);
+            int textHeight = fm.getHeight();
+            int x = (screenWidth - textWidth) / 2;
+            int y = screenHeight / 2;
+
+            g2.drawString(text, x, y);
+        } else {
         //TILE
         tileM.draw(g2);
 
@@ -144,5 +175,5 @@ public class GamePanel extends JPanel implements Runnable {
         paused.draw(g2);
         g2.dispose();
 
-    }
+    }}
 }

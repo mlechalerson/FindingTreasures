@@ -31,7 +31,6 @@ public class TileManager {
             tile[0].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/Bomba-sand.png")));
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/Bomba-sky.png")));
-            tile[2] = new Tile();
             tile[1].collision=true;
 
 
