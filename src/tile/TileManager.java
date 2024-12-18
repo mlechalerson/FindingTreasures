@@ -1,5 +1,6 @@
 package tile;
 
+import entity.Monster;
 import main.GamePanel;
 
 import javax.imageio.ImageIO;
@@ -15,9 +16,10 @@ public class TileManager {
     GamePanel gp;
     public Tile[] tile;
     public int[][] mapTileNum;
-
-    public TileManager(GamePanel gp) {
+    public Monster monster;
+    public TileManager(GamePanel gp, Monster monster) {
         this.gp = gp;
+        this.monster = monster;
 
         tile = new Tile[10];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];

@@ -1,5 +1,6 @@
 package main;
 
+import entity.Monster;
 import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
@@ -25,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     int FPS = 60;
 
-    TileManager tileM = new TileManager(this);
+
     public KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
@@ -43,7 +44,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int pauseState =2;
     public final int dialogueState =3;
     public final int gameOverState =4;
-    public Monster monster;
+    public Monster monster = new Monster(this);
+    TileManager tileM = new TileManager(this, monster);
 
 
     public GamePanel() {
@@ -58,24 +60,15 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame(){
 
         aSetter.seObject();
-        boolean monsterPlaced = false;
-        Random random = new Random();
+//        Random random = new Random();
+//        int row = random.nextInt(maxWorldRow);
+//        int col = random.nextInt(maxWorldCol);
 
-        for (int attempt = 0; attempt < 100 && !monsterPlaced; attempt++) {
-            int row = random.nextInt(maxWorldRow);
-            int col = random.nextInt(maxWorldCol);
+        monster = new Monster(this);
+        monster.worldX = 2 * TileSize;
+        monster.worldY =  2 * TileSize;
 
-            if (tileM.mapTileNum[col][row] == 0) {
-                monster = new Monster(this);
-                monster.worldX = col * TileSize;
-                monster.worldY = row * TileSize;
-                monsterPlaced = true;
-            }
-        }
-        if (!monsterPlaced) {
-            System.out.println("Could not find a sand tile to place monster!");
-            monster = null;
-        }
+        System.out.println("Monster spawned at: X=" + monster.worldX + ", Y=" + monster.worldY);
 
         gameState = playState;
     }
@@ -163,6 +156,7 @@ public class GamePanel extends JPanel implements Runnable {
                 obj[i].draw(g2, this);
             }
         }
+        //MONSTER
         if (monster != null) {
             monster.draw(g2);
         }

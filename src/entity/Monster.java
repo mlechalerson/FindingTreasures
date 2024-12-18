@@ -1,15 +1,15 @@
-package main;
+package entity;
 
-import entity.Entity;
+import main.GamePanel;
 
 import javax.imageio.ImageIO;
-import javax.xml.namespace.QName;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Monster extends Entity {
     String name;
+    int monsterSpeed = 1;
     int damageAmount = 1;
 
     public Monster(GamePanel gp) {
@@ -17,7 +17,7 @@ public class Monster extends Entity {
         this.gp = gp;
 
         name = "Garnuch";
-        speed = 10;
+        monsterSpeed = 1;
         maxLife = 1;
         life = maxLife;
 
@@ -46,8 +46,9 @@ public class Monster extends Entity {
 
     public void update() {
         // Wybór kierunku ruchu
-        int xDistance = gp.player.worldX - worldX;
-        int yDistance = gp.player.worldY - worldY;
+        int xDistance = gp.player.worldX - this.worldX;
+        int yDistance = gp.player.worldY - this.worldY;
+        System.out.println("y = " + gp.player.worldY + " " + this.worldY);
         // Priorytetowy ruch w kierunku gracza
         if (Math.abs(xDistance) > Math.abs(yDistance)) {
             // Poruszaj się w poziomie
@@ -69,6 +70,20 @@ public class Monster extends Entity {
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this, false);
 
+        if (xDistance > monsterSpeed) {
+            //worldX += monsterSpeed;
+        } else if (xDistance < -monsterSpeed) {
+            //worldX -= monsterSpeed;
+        }
+
+        System.out.println(yDistance + " " + monsterSpeed);
+        if (yDistance > 0) {
+            //worldY += monsterSpeed;
+        } else if (yDistance < 0) {
+            //worldY -= monsterSpeed;
+            System.out.println("gora");
+        }
+
         // Poruszanie się, jeśli nie ma kolizji
         if (!collisionOn) {
             switch (direction) {
@@ -88,11 +103,7 @@ public class Monster extends Entity {
         }
         spriteCounter++;
         if (spriteCounter > 12) {
-            if (spriteNum == 1) {
-                spriteNum = 2;
-            } else if (spriteNum == 2) {
-                spriteNum = 1;
-            }
+            spriteNum = (spriteNum == 1) ? 2 : 1;
             spriteCounter = 0;
         }
         int monsterIndex = gp.cChecker.checkObject(this, false);
@@ -112,6 +123,10 @@ public class Monster extends Entity {
             System.out.println("Monster attacked! Player life: " + gp.player.life);
     }}
     public void draw(Graphics2D g2) {
+
+        if (direction == null) {
+            return;  // Wyjdź z metody, jeśli kierunek nie jest ustawiony
+        }
         BufferedImage image = null;
 
         switch (direction) {
